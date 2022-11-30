@@ -14,12 +14,12 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable {
     private bool isPressing = false;
 
     [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
-    public static GameObject LocalPlayerInstance;
+    public static GameObject localPlayerInstance;
 
     public void Awake() {
         cursorCollision = GetComponentInChildren<CursorCollision>();
         if (photonView.IsMine) {
-            PlayerManager.LocalPlayerInstance = this.gameObject;
+            PlayerManager.localPlayerInstance = this.gameObject;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
@@ -29,30 +29,17 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable {
     }
 
     void Update() {
-        if (photonView.IsMine) {
+        if(photonView.IsMine) {
             ProcessInputs();
         }
-        if(isPressing) {
-            bodyRenderer.color = Color.red;
-        } else {
-            bodyRenderer.color = Color.black;
-        }
+        bodyRenderer.color = isPressing ? Color.red : Color.black;
     }
 
     void ProcessInputs() {
+        if(Pause.GameIsPaused) return;
         isPressing = Input.GetButton("Fire1");
         if(isPressing) {
             cursorCollision.performClick();
-        }
-        
-        if(Input.GetKeyDown(KeyCode.Escape)) {
-            if(Cursor.lockState == CursorLockMode.Locked) {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            } else {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
         }
     }
 

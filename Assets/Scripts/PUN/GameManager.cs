@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             Debug.LogError("<Color=Red><a>Missing</a></Color> playerPrefab Reference. Please set it up in GameObject 'Game Manager'",this);
         } else {
 
-            if (PlayerManager.LocalPlayerInstance == null) {
+            if (PlayerManager.localPlayerInstance == null) {
                 Debug.Log("We are Instantiating LocalPlayer");
                 // we're in a room. spawn a character for the local player. it gets synced by using PhotonNetwork.Instantiate
                 PhotonNetwork.Instantiate("Prefabs/" + this.playerPrefab.name, new Vector3(0f,0f,0f), Quaternion.identity, 0);
