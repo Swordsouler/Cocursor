@@ -16,6 +16,12 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable {
     [Tooltip("The local player instance. Use this to know if the local player is represented in the Scene")]
     public static GameObject localPlayerInstance;
 
+    private Rigidbody2D rb;
+
+    private void Start() {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
     public void Awake() {
         cursorCollision = GetComponentInChildren<CursorCollision>();
         if (photonView.IsMine) {
@@ -52,5 +58,12 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable {
             // Network player, receive data
             this.isPressing = (bool)stream.ReceiveNext();
         }
+    }
+
+    public Vector3 getCursorEdgePosition() {
+        Vector3 position = transform.position;
+        position.x -= 0.25f;
+        position.y += 0.25f;
+        return position;
     }
 }

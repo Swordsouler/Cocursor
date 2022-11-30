@@ -6,7 +6,6 @@ using Photon.Pun;
 
 public class MoveDependingMouse : MonoBehaviourPunCallbacks
 {
-    public Vector3 mouseDelta;
     public float sensitivity = 2f;
     private Rigidbody2D rb;
 
@@ -17,8 +16,7 @@ public class MoveDependingMouse : MonoBehaviourPunCallbacks
     void Update() {
         if(!photonView.IsMine) return;
 
-        
-        mouseDelta = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0);
+        Vector3 mouseDelta = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0);
         if(mouseDelta.magnitude <= 100 && Cursor.lockState == CursorLockMode.Locked) {
             rb.velocity = mouseDelta * sensitivity;
         }

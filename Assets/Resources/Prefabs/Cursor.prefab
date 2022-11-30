@@ -137,7 +137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 543ed9ceea58b514687f4c770334d16c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseDelta: {x: 0, y: 0, z: 0}
   sensitivity: 30
 --- !u!212 &5580855298187429117
 SpriteRenderer:
