@@ -6,6 +6,7 @@ using Photon.Pun;
 using System.Collections;
 
 public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable {
+    private CursorCollision cursorCollision;
 
     [SerializeField]
     private SpriteRenderer bodyRenderer;
@@ -16,6 +17,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable {
     public static GameObject LocalPlayerInstance;
 
     public void Awake() {
+        cursorCollision = GetComponentInChildren<CursorCollision>();
         if (photonView.IsMine) {
             PlayerManager.LocalPlayerInstance = this.gameObject;
             Cursor.visible = false;
@@ -39,6 +41,9 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable {
 
     void ProcessInputs() {
         isPressing = Input.GetButton("Fire1");
+        if(isPressing) {
+            cursorCollision.performClick();
+        }
         
         if(Input.GetKeyDown(KeyCode.Escape)) {
             if(Cursor.lockState == CursorLockMode.Locked) {
