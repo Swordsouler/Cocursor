@@ -16,6 +16,9 @@ public class MoveCamera : MonoBehaviour {
     }
 
     private bool isCameraMoved() {
+        if(PlayerManager.localPlayerInstance == null) {
+            return false;
+        }
         return Mathf.Floor((PlayerManager.localPlayerInstance.transform.position.x + 16) / 32) != cameraX || 
             Mathf.Floor((PlayerManager.localPlayerInstance.transform.position.y + 9.3f) / 18) != cameraY;
     }

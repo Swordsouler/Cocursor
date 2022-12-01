@@ -48,6 +48,9 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     #region Public Methods
     public void LeaveRoom() {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Pause.GameIsPaused = false;
         PhotonNetwork.Destroy(PlayerManager.localPlayerInstance);
         PhotonNetwork.LeaveRoom();
     }
