@@ -20,6 +20,13 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable {
 
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
+        if(!photonView.IsMine) {
+            GetComponent<CursorCollision>().enabled = false;
+            GetComponent<PlayerManager>().enabled = false;
+            GetComponent<Rigidbody2D>().isKinematic = true;
+            GetComponent<Collider2D>().enabled = false;
+
+        }
     }
 
     public void Awake() {

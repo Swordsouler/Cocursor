@@ -41,7 +41,7 @@ public class CursorCollision : MonoBehaviour {
 
     public Vector3 getCheckPointPosition() {
         if(checkPoint != null) {
-            return checkPoint.transform.position;
+            return new Vector3(checkPoint.transform.position.x, checkPoint.transform.position.y, gameObject.transform.position.z);
         }
         return Vector3.zero;
     }
