@@ -20,5 +20,9 @@ public class MoveDependingMouse : MonoBehaviourPunCallbacks
         if(mouseDelta.magnitude <= 100 && Cursor.lockState == CursorLockMode.Locked) {
             rb.velocity = mouseDelta * sensitivity;
         }
+
+        //increase/decrease sensitivity depending of mouse wheel min = 1f max = 50f
+        sensitivity += Input.mouseScrollDelta.y;
+        sensitivity = Mathf.Clamp(sensitivity, 1f, 50f);
     }
 }
