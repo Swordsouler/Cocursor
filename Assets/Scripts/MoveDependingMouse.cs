@@ -14,7 +14,8 @@ public class MoveDependingMouse : MonoBehaviourPunCallbacks
     }
 
     void Update() {
-        if(!photonView.IsMine) return;
+        if(!photonView.IsMine || Pause.GameIsPaused) return;
+        Debug.Log("test");
 
         Vector3 mouseDelta = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0);
         if(mouseDelta.magnitude <= 100 && Cursor.lockState == CursorLockMode.Locked) {

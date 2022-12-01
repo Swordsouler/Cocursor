@@ -16,6 +16,7 @@ public class Pause : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         GameIsPaused = true;
+        PlayerManager.localPlayerInstance.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
     public void ResumeGame() {

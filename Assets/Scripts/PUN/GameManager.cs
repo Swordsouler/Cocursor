@@ -38,8 +38,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     /// <summary>
     /// Called when the local player left the room. We need to load the launcher scene.
     /// </summary>
-    public override void OnLeftRoom()
-    {
+    public override void OnLeftRoom() {
         SceneManager.LoadScene(0);
     }
 
@@ -48,15 +47,14 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 
     #region Public Methods
-    public void LeaveRoom()
-    {
+    public void LeaveRoom() {
+        PhotonNetwork.Destroy(PlayerManager.localPlayerInstance);
         PhotonNetwork.LeaveRoom();
     }
     #endregion
 
     #region Private Methods
-    void LoadArena()
-    {
+    void LoadArena() {
         if (!PhotonNetwork.IsMasterClient)
         {
             Debug.LogError("PhotonNetwork : Trying to Load a level but we are not the master Client");

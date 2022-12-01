@@ -44,7 +44,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable {
     void ProcessInputs() {
         if(Pause.GameIsPaused) return;
         isPressing = Input.GetButton("Fire1");
-        if(isPressing) {
+        if(Input.GetButtonDown("Fire1")) {
             cursorCollision.performClick();
         }
     }
@@ -65,5 +65,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable {
         position.x -= 0.25f;
         position.y += 0.25f;
         return position;
+    }
+
+    public void respawnPlayer() {
+        if (photonView.IsMine) {
+            gameObject.transform.position = cursorCollision.getCheckPointPosition();
+        }
     }
 }
