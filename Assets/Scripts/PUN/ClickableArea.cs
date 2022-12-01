@@ -4,8 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 
 public class ClickableArea : MonoBehaviourPunCallbacks, IPunObservable {
-    [SerializeField]
-    private Color originColor;
+    public Color originColor;
 
     [SerializeField]
     private int maxNumberOfClicks = 100;
@@ -26,7 +25,7 @@ public class ClickableArea : MonoBehaviourPunCallbacks, IPunObservable {
     }
 
     private void Update() {
-        text.text = numberOfClicks.ToString();
+        text.text = numberOfClicks <= 0 ? "" : numberOfClicks.ToString();
         background.color = new Color(originColor.r, originColor.g, originColor.b, (float)numberOfClicks / (float)maxNumberOfClicks);
         if(Input.GetKeyDown(KeyCode.Space)) {
             performClick();
@@ -41,6 +40,13 @@ public class ClickableArea : MonoBehaviourPunCallbacks, IPunObservable {
     [PunRPC]
     void Click() {
         numberOfClicks--;
+        if(numberOfClicks == 0) {
+            StartCoroutine(Respawn());
+        }
+    }
+
+    public bool isFinish() {
+        return numberOfClicks <= 0;
     }
 
 
@@ -53,5 +59,10 @@ public class ClickableArea : MonoBehaviourPunCallbacks, IPunObservable {
             // Network player, receive data
             this.numberOfClicks = (int)stream.ReceiveNext();
         }
+    }
+
+    private IEnumerator Respawn() {
+        yield return new WaitForSeconds(5f);
+        numberOfClicks = maxNumberOfClicks;
     }
 }
