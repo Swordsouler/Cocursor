@@ -12,6 +12,9 @@ public class CursorCollision : MonoBehaviour {
             case "Clickable":
                 objects.Add(collision.gameObject);
                 break;
+            case "Hoverable":
+                collision.gameObject.GetComponent<HoverableArea>().performHoverEnter();
+                break;
             case "Check Point":
                 checkPoint = collision.gameObject;
                 break;
@@ -25,6 +28,9 @@ public class CursorCollision : MonoBehaviour {
         switch(collision.gameObject.tag) {
             case "Clickable":
                 objects.Remove(collision.gameObject);
+                break;
+            case "Hoverable":
+                collision.gameObject.GetComponent<HoverableArea>().performHoverExit();
                 break;
             case "Check Point":
                 break;
