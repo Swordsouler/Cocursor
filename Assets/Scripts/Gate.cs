@@ -4,26 +4,42 @@ using UnityEngine;
 using Photon.Pun;
 
 public class Gate : MonoBehaviourPunCallbacks, IPunObservable {
-    
+    public enum GateType {
+        OR,
+        AND
+    }
     private bool isGateOpen = false;
     [SerializeField]
-    private ClickableArea clickableArea;
+    private Area[] areas = new Area[0];
+
+    [SerializeField]
+    private GateType gateType = GateType.OR;
 
     private void Start() {
         gameObject.GetComponent<SpriteRenderer>().color = new Color(
-            clickableArea.originColor.r, 
-            clickableArea.originColor.g, 
-            clickableArea.originColor.b, 
+            areas[0].originColor.r, 
+            areas[0].originColor.g, 
+            areas[0].originColor.b, 
             1f
         );
     }
 
     private void Update() {
         if(photonView.IsMine) {
-            if(clickableArea.isFinish()) {
-                isGateOpen = true;
-            } else {
-                isGateOpen = false;
+            switch(gateType) {
+                case GateType.OR:
+                    foreach(Area area in areas) {
+                        isGateOpen = area.isFinish();
+                        if(isGateOpen) break;
+                    }
+                    break;
+                case GateType.AND:
+                    isGateOpen = true;
+                    foreach(Area area in areas) {
+                        isGateOpen = area.isFinish();
+                        if(!isGateOpen) break;
+                    }
+                    break;
             }
         }
         if(isGateOpen) {
@@ -38,7 +54,6 @@ public class Gate : MonoBehaviourPunCallbacks, IPunObservable {
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.IsWriting) {
             // We own this player: send the others our data
-            stream.SendNext(isGateOpen);
             stream.SendNext(isGateOpen);
         } else {
             // Network player, receive data

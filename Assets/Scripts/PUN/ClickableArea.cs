@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class ClickableArea : MonoBehaviourPunCallbacks, IPunObservable {
-    public Color originColor;
+public class ClickableArea : Area {
 
     [SerializeField]
     private int maxNumberOfClicks = 100;
@@ -14,6 +13,12 @@ public class ClickableArea : MonoBehaviourPunCallbacks, IPunObservable {
     private TextMesh text;
     [SerializeField]
     private SpriteRenderer background;
+
+    private void Awake() {
+        if (area) {
+            originColor = area.originColor;
+        }
+    }
 
     private void Start() {
         background.color = originColor;
@@ -25,11 +30,14 @@ public class ClickableArea : MonoBehaviourPunCallbacks, IPunObservable {
     }
 
     private void Update() {
-        text.text = numberOfClicks <= 0 ? "" : numberOfClicks.ToString();
+        text.text = !isShow || numberOfClicks <= 0 ? "" : numberOfClicks.ToString();
         background.color = new Color(originColor.r, originColor.g, originColor.b, (float)numberOfClicks / (float)maxNumberOfClicks);
-        if(Input.GetKeyDown(KeyCode.Space)) {
-            performClick();
+        
+        if (area) {
+            isShow = area.isFinish();
         }
+        background.enabled = isShow;
+        gameObject.GetComponent<BoxCollider2D>().enabled = isShow;
     }
 
     public void performClick() {
@@ -45,12 +53,12 @@ public class ClickableArea : MonoBehaviourPunCallbacks, IPunObservable {
         }
     }
 
-    public bool isFinish() {
+    public override bool isFinish() {
         return numberOfClicks <= 0;
     }
 
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    public override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting) {
             // We own this player: send the others our data

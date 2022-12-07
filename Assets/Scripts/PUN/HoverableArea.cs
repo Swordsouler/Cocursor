@@ -3,91 +3,66 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class HoverableArea : MonoBehaviourPunCallbacks, IPunObservable {
-    public Color originColor;
+public class HoverableArea : Area {
 
-    private bool isHovered = false;
-    [SerializeField]
-    private HoverableArea hoverableArea2; // will spawn this second hoverable area when this current hoverable area is hovered
+    private int numberOfCursorOver = 0;
 
     [SerializeField]
     private SpriteRenderer background;
 
+
+    private void Awake() {
+        if (area) {
+            originColor = area.originColor;
+        }
+    }
+
     private void Start() {
         background.color = originColor;
-        if (hoverableArea2)
-        {
-            hoverableArea2.gameObject.SetActive(false);
-        }
     }
 
     private void Update() {
-        background.color = new Color(originColor.r, originColor.g, originColor.b);
-        if(Input.GetKeyDown(KeyCode.Space)) {
-            OnHoverEnter();
+        background.color = originColor;
+        if (area) {
+            isShow = area.isFinish();
         }
+        background.enabled = isShow;
+        gameObject.GetComponent<BoxCollider2D>().enabled = isShow;
     }
 
-    public bool isFinish()
-    {
-        if (hoverableArea2)
-        {
-            return hoverableArea2.isHovered;
-        }
-        else
-        {
-            return false;
-        }
+    public override bool isFinish() {
+        return this.numberOfCursorOver > 0;
     }
 
-
-
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
+    public override void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) {
         if (stream.IsWriting) {
             // We own this player: send the others our data
-            stream.SendNext(isHovered);
+            stream.SendNext(numberOfCursorOver);
         } else {
             // Network player, receive data
-            this.isHovered = (bool)stream.ReceiveNext();
+            this.numberOfCursorOver = (int)stream.ReceiveNext();
         }
     }
 
-    public void performHoverEnter()
-    {
+    public void performHoverEnter() {
         PhotonView photonView = PhotonView.Get(this);
         photonView.RPC("OnHoverEnter", RpcTarget.All);
     }
 
-    public void performHoverExit()
-    {
+    public void performHoverExit() {
         PhotonView photonView = PhotonView.Get(this);
         photonView.RPC("OnHoverExit", RpcTarget.All);
     }
 
     [PunRPC]
-    void OnHoverEnter()
-    {
-        // Example later implement CanPlayerDoThis()
-        // Maybe Team A can do this but not Team B
-        GetComponent<MeshRenderer>().material.color = new Color(1, 0, 0, 1);
-        if (hoverableArea2)
-        {
-            hoverableArea2.gameObject.SetActive(true);
-        }
+    void OnHoverEnter() {
+        numberOfCursorOver++;
 
     }
 
     [PunRPC]
     void OnHoverExit()
     {
-        // Example later implement CanPlayerDoThis()
-        // Maybe Team A can do this but not Team B
-        GetComponent<MeshRenderer>().material.color = new Color(0, 1, 0, 1);
-        if (hoverableArea2)
-        {
-            hoverableArea2.gameObject.SetActive(false);
-        }
-
+        numberOfCursorOver--;
     }
 }

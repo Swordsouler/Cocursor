@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 591411610775486341}
-  - component: {fileID: 591411610775486343}
   - component: {fileID: 591411610775486342}
+  - component: {fileID: 591411610775486343}
+  - component: {fileID: 6334976060122468959}
   m_Layer: 0
   m_Name: Clickable Area
   m_TagString: Clickable
@@ -26,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 591411610775486340}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4, y: 2.5, z: 0}
+  m_LocalPosition: {x: 0.5, y: 0.5, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -35,6 +36,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &591411610775486342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 591411610775486340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 333ec433f9ce03d468b0979516b87cb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originColor: {r: 1, g: 1, b: 0, a: 1}
+  area: {fileID: 0}
+  isShow: 1
+  maxNumberOfClicks: 10
+  text: {fileID: 591411611619283939}
+  background: {fileID: 591411611122196702}
 --- !u!61 &591411610775486343
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -61,7 +80,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &591411610775486342
+--- !u!114 &6334976060122468959
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -70,13 +89,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 591411610775486340}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 333ec433f9ce03d468b0979516b87cb3, type: 3}
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  originColor: {r: 0, g: 0, b: 0, a: 0}
-  maxNumberOfClicks: 1000
-  text: {fileID: 591411611619283939}
-  background: {fileID: 591411611122196702}
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &591411611122196700
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,7 +269,7 @@ TextMesh:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 591411611619283937}
-  m_Text: 100
+  m_Text: 10
   m_OffsetZ: 0
   m_CharacterSize: 1
   m_LineSpacing: 1

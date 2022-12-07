@@ -12,6 +12,8 @@ public abstract class Map : MonoBehaviour {
 
     private void Start() {
         int[,] map = getMap();
+        GameObject walls = new GameObject("Walls");
+        walls.transform.SetParent(transform);
         for (int y = 0; y < map.GetLength(0); y++) {
             for (int x = 0; x < map.GetLength(1); x++) {
                 if (map[y, x] == 1) {
@@ -23,7 +25,8 @@ public abstract class Map : MonoBehaviour {
                             2
                         ), 
                         Quaternion.identity);
-                    go.transform.SetParent(transform);
+                    go.name = "Wall";
+                    go.transform.SetParent(walls.transform);
                 }
             }
         }
