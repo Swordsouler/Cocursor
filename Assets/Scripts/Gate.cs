@@ -8,20 +8,26 @@ public class Gate : MonoBehaviourPunCallbacks, IPunObservable {
         OR,
         AND
     }
-    private bool isGateOpen = false;
+    public bool isGateOpen = false;
     [SerializeField]
     private Area[] areas = new Area[0];
 
     [SerializeField]
     private GateType gateType = GateType.OR;
 
+    [SerializeField]
+    private bool isInverted = false;
+
     private void Start() {
-        gameObject.GetComponent<SpriteRenderer>().color = new Color(
-            areas[0].originColor.r, 
-            areas[0].originColor.g, 
-            areas[0].originColor.b, 
-            1f
-        );
+        SpriteRenderer spriteRenderer;
+        if(gameObject.TryGetComponent<SpriteRenderer>(out spriteRenderer)) {
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(
+                areas[0].originColor.r, 
+                areas[0].originColor.g, 
+                areas[0].originColor.b, 
+                1f
+            );
+        }
     }
 
     private void Update() {
@@ -43,11 +49,31 @@ public class Gate : MonoBehaviourPunCallbacks, IPunObservable {
             }
         }
         if(isGateOpen) {
-            gameObject.GetComponent<SpriteRenderer>().enabled = false;
-            gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            SpriteRenderer spriteRenderer;
+            if(gameObject.TryGetComponent<SpriteRenderer>(out spriteRenderer)) {
+                spriteRenderer.enabled = isInverted;
+            }
+            BoxCollider2D boxCollider2D;
+            if(gameObject.TryGetComponent<BoxCollider2D>(out boxCollider2D)) {
+                boxCollider2D.enabled = isInverted;
+            }
+            MeshRenderer meshRenderer;
+            if(gameObject.TryGetComponent<MeshRenderer>(out meshRenderer)) {
+                meshRenderer.enabled = isInverted;
+            }
         } else {
-            gameObject.GetComponent<SpriteRenderer>().enabled = true;
-            gameObject.GetComponent<BoxCollider2D>().enabled = true;
+            SpriteRenderer spriteRenderer;
+            if(gameObject.TryGetComponent<SpriteRenderer>(out spriteRenderer)) {
+                spriteRenderer.enabled = !isInverted;
+            }
+            BoxCollider2D boxCollider2D;
+            if(gameObject.TryGetComponent<BoxCollider2D>(out boxCollider2D)) {
+                boxCollider2D.enabled = !isInverted;
+            }
+            MeshRenderer meshRenderer;
+            if(gameObject.TryGetComponent<MeshRenderer>(out meshRenderer)) {
+                meshRenderer.enabled = !isInverted;
+            }
         }
     }
 

@@ -79,4 +79,10 @@ public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable {
             gameObject.transform.position = cursorCollision.getCheckPointPosition();
         }
     }
+
+    public void teleportToLoaction(Vector3 location) {
+        if (photonView.IsMine) {
+            gameObject.transform.position = location;
+        }
+    }
 }

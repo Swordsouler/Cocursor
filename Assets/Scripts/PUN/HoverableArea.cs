@@ -23,8 +23,12 @@ public class HoverableArea : Area {
 
     private void Update() {
         background.color = originColor;
-        if (area) {
-            isShow = area.isFinish();
+        if(gameObject.TryGetComponent<Gate>(out Gate gate)) {
+            isShow = !gate.isGateOpen;
+        } else {
+            if (area) {
+                isShow = area.isFinish();
+            }
         }
         background.enabled = isShow;
         gameObject.GetComponent<BoxCollider2D>().enabled = isShow;

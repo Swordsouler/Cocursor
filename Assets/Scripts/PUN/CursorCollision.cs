@@ -21,6 +21,9 @@ public class CursorCollision : MonoBehaviour {
             case "Kill":
                 gameObject.GetComponent<PlayerManager>().respawnPlayer();
                 break;
+            case "Portal":
+                collision.gameObject.GetComponent<Portal>().teleportPlayer(gameObject.GetComponent<PlayerManager>());
+                break;
         }
     }
 
