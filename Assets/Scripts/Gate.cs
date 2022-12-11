@@ -18,7 +18,11 @@ public class Gate : MonoBehaviourPunCallbacks, IPunObservable {
     [SerializeField]
     private bool isInverted = false;
 
+    [SerializeField]
+    private bool ignoreColor = false;
+
     private void Start() {
+        if(ignoreColor) return;
         SpriteRenderer spriteRenderer;
         if(gameObject.TryGetComponent<SpriteRenderer>(out spriteRenderer)) {
             gameObject.GetComponent<SpriteRenderer>().color = new Color(
